@@ -19,8 +19,8 @@
  * @returns a list of tuples that are either `[original node, popup node]` or `[original HTMLStyleElement, popup HTMLStyleElement]`
  */
 function zipStyleElements(
-	original: HTMLStyleElement,
-	n: HTMLStyleElement
+	original: Element,
+	n: Element
 ): (readonly [Node, Node])[] {
 	const originalChildren = original.childNodes
 	return [
@@ -99,7 +99,7 @@ export function enableStyleCopying(popupHead: HTMLHeadElement) {
     // grab all current original stylesheets as well as their child nodes
     // and put in a map for referencing
 	const allNodes = new Map(
-		[...watchNode.querySelectorAll('style')].flatMap((node) => {
+		[...watchNode.querySelectorAll('style, link[rel="stylesheet"]')].flatMap((node) => {
 			const newNode = node.cloneNode(true) as HTMLStyleElement
 			popupHead.appendChild(newNode)
 			const list = zipStyleElements(node, newNode)
